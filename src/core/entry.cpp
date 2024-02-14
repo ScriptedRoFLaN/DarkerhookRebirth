@@ -64,7 +64,7 @@ void __attribute__((destructor)) deconstruct()
     detach();
 }
 
-CatCommand cat_detach("detach", "Detach Rosnehook from TF2",
+CatCommand cat_detach("detach", "Detach Darkerhook from TF2",
                       []()
                       {
                           hack::game_shutdown = false;

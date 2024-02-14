@@ -30,7 +30,7 @@ bool settings::SettingsWriter::saveTo(std::string path, bool autosave)
     {
         logging::File("cat_save: FATAL! FAILED to create stream!");
         if (!autosave)
-            g_ICvar->ConsoleColorPrintf(MENU_COLOR, "ROSNEHOOK: cat_save: Can't create config file!\n");
+            g_ICvar->ConsoleColorPrintf(MENU_COLOR, "DARKERHOOK: cat_save: Can't create config file!\n");
         return false;
     }
 
@@ -54,11 +54,11 @@ bool settings::SettingsWriter::saveTo(std::string path, bool autosave)
     if (!stream || stream.bad() || stream.fail())
     {
         if (!autosave)
-            g_ICvar->ConsoleColorPrintf(MENU_COLOR, "ROSNEHOOK: cat_save: Failed to save config!\n");
+            g_ICvar->ConsoleColorPrintf(MENU_COLOR, "DARKERHOOK: cat_save: Failed to save config!\n");
         logging::File("cat_save: FATAL! Stream bad!");
     }
     else if (!autosave)
-        g_ICvar->ConsoleColorPrintf(MENU_COLOR, "ROSNEHOOK: cat_save: Successfully saved config!\n");
+        g_ICvar->ConsoleColorPrintf(MENU_COLOR, "DARKERHOOK: cat_save: Successfully saved config!\n");
     stream.close();
     if (stream.fail())
         logging::File("cat_save: FATAL! Stream bad (2)!");
@@ -108,7 +108,7 @@ bool settings::SettingsReader::loadFrom(std::string path)
     if (stream.fail())
     {
         logging::Info("cat_load: Can't access file!");
-        g_ICvar->ConsoleColorPrintf(MENU_COLOR, "ROSNEHOOK: cat_load: File doesn't exist / can't open file!\n");
+        g_ICvar->ConsoleColorPrintf(MENU_COLOR, "DARKERHOOK: cat_load: File doesn't exist / can't open file!\n");
         return false;
     }
 
@@ -128,12 +128,12 @@ bool settings::SettingsReader::loadFrom(std::string path)
     if (stream.fail() && !stream.eof())
     {
         logging::Info("cat_load: FATAL: Read failed!");
-        g_ICvar->ConsoleColorPrintf(MENU_COLOR, "ROSNEHOOK: cat_load: Failed to read config!\n");
+        g_ICvar->ConsoleColorPrintf(MENU_COLOR, "DARKERHOOK: cat_load: Failed to read config!\n");
         return false;
     }
 
     logging::Info("cat_load: Read Success!");
-    g_ICvar->ConsoleColorPrintf(MENU_COLOR, "ROSNEHOOK: cat_load: Successfully loaded config!\n");
+    g_ICvar->ConsoleColorPrintf(MENU_COLOR, "DARKERHOOK: cat_load: Successfully loaded config!\n");
     finishString(true);
 
     return true;
@@ -145,7 +145,7 @@ bool settings::SettingsReader::loadFromString(std::string stream)
     if (stream == "")
     {
         logging::Info("cat_load: Empty String!");
-        g_ICvar->ConsoleColorPrintf(MENU_COLOR, "ROSNEHOOK: cat_load: Empty String!\n");
+        g_ICvar->ConsoleColorPrintf(MENU_COLOR, "DARKERHOOK: cat_load: Empty String!\n");
         return false;
     }
 
@@ -160,7 +160,7 @@ bool settings::SettingsReader::loadFromString(std::string stream)
     }
 
     logging::Info("cat_load: Read Success!");
-    g_ICvar->ConsoleColorPrintf(MENU_COLOR, "ROSNEHOOK: cat_load: Successfully loaded config!\n");
+    g_ICvar->ConsoleColorPrintf(MENU_COLOR, "DARKERHOOK: cat_load: Successfully loaded config!\n");
     loader.finishString(true);
 
     return true;

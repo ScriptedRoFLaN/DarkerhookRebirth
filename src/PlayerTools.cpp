@@ -14,7 +14,7 @@ namespace player_tools
 static settings::Int betrayal_limit{ "player-tools.betrayal-limit", "2" };
 static settings::Boolean betrayal_sync{ "player-tools.betrayal-ipc-sync", "true" };
 
-static settings::Boolean ignoreRosnehook{ "player-tools.ignore.rosnehook", "true" }; // why do you have this man.
+static settings::Boolean ignoreDarkerhook{ "player-tools.ignore.darkerhook", "true" }; // why do you have this man.
 
 static std::unordered_map<unsigned, unsigned> betrayal_list{};
 
@@ -26,7 +26,7 @@ bool shouldTargetSteamId(unsigned id)
         return true;
 
     auto &pl = playerlist::AccessData(id);
-    if (playerlist::IsFriendly(pl.state) || (pl.state == playerlist::k_EState::CAT && *ignoreRosnehook))
+    if (playerlist::IsFriendly(pl.state) || (pl.state == playerlist::k_EState::CAT && *ignoreDarkerhook))
         return false;
     return true;
 }

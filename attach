@@ -46,4 +46,4 @@ $gdbbin -n -q -batch \
 rm "$FILENAME"
 
 echo
-echo "have fun pwning n00bs with rosnehook!"
+echo "have fun pwning n00bs with darkerhook!"

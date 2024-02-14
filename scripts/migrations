@@ -35,7 +35,7 @@ if [ "$PRE_UPDATE" == "true" ]; then
   fi
   if [ ! -d "./.git" ]; then
     git init
-    git remote add origin https://github.com/RosneBurgerworks/rosnehook
+    git remote add origin https://github.com/RosneBurgerworks/darkerhook
     cfg_write $configfile update_channel master
   fi
 fi

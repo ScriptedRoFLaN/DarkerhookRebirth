@@ -31,14 +31,14 @@ requestPermissions() {
     return
   # Prefer GUI question
   elif [ -x "$(command -v zenity)" ] && xset q &>/dev/null; then
-    zenity --no-wrap --question --text="Do you want to install the following packages required for Rosnehook?\n${string}?"
+    zenity --no-wrap --question --text="Do you want to install the following packages required for Darkerhook?\n${string}?"
     out=$?
     if [ "$out" != 0 ]; then
       exit
     fi
   # Fall back to terminal
   elif [ -t 0 ]; then
-    read -p "Do you want to install the following packages required for Rosnehook? ${string} y/n " -r
+    read -p "Do you want to install the following packages required for Darkerhook? ${string} y/n " -r
     if ! [[ $REPLY =~ ^[Yy]$ ]]; then
       exit
     fi

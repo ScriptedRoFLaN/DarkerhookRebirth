@@ -23,7 +23,7 @@ FILENAME="/tmp/.gl$(head /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 6)"
 
 cp "bin/libcathook.so" "$FILENAME"
 
-echo "Preloading Rosnehook as $FILENAME!"
+echo "Preloading Darkerhook as $FILENAME!"
 TF2_PATH=$(realpath ~/.steam/steam/steamapps/common/Team\ Fortress\ 2/)
 pushd "$TF2_PATH" || exit
 LD_PRELOAD="$FILENAME" LD_LIBRARY_PATH="$TF2_PATH/bin" "$TF2_PATH/hl2_linux" -game tf &

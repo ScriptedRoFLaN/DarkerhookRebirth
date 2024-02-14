@@ -5,7 +5,7 @@ if [ $EUID == 0 ]; then
 fi
 
 while true; do
-  read -r -p "Do you want to switch your Rosnehook repository into developer mode? y/n " yn
+  read -r -p "Do you want to switch your Darkerhook repository into developer mode? y/n " yn
   case $yn in
   [Yy]*) break ;;
   [Nn]*) exit ;;

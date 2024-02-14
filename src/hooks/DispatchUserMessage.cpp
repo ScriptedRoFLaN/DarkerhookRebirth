@@ -140,7 +140,7 @@ DEFINE_HOOKED_METHOD(DispatchUserMessage, bool, void *this_, int type, bf_read &
                 }
                 else
                 {
-                    std::string autobalance_msg = "tf_party_chat \"[ROSNEHOOK] autobalanced in 3 seconds";
+                    std::string autobalance_msg = "tf_party_chat \"[DARKERHOOK] autobalanced in 3 seconds";
                     if (ipc::peer && ipc::peer->connected)
                         autobalance_msg += format(" IPC ID ", ipc::peer->client_id, "\"");
                     else

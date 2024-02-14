@@ -19,6 +19,6 @@ void InitClassTable()
     if (!client_class_list)
     {
         logging::Info("FATAL: Cannot initialize class list! Game will crash if "
-                      "Rosnehook is enabled.");
+                      "Darkerhook is enabled.");
     }
 }

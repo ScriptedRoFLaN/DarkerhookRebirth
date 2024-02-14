@@ -361,7 +361,7 @@ CatCommand dump_achievement("achievement_dump", "Dump achievements to file (deve
                             {
                                 if (!checkAchMgr())
                                     return;
-                                std::ofstream out("/tmp/rosnehook_achievements.txt", std::ios::out);
+                                std::ofstream out("/tmp/darkerhook_achievements.txt", std::ios::out);
                                 if (out.bad())
                                     return;
                                 for (int i = 0; i < g_IAchievementMgr->GetAchievementCount(); ++i)

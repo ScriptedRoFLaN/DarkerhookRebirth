@@ -10,7 +10,7 @@
 void PerformClassDump()
 {
     ClientClass *cc = g_IBaseClient->GetAllClasses();
-    FILE *cd        = fopen("/tmp/rosnehook-classdump.txt", "w");
+    FILE *cd        = fopen("/tmp/darkerhook-classdump.txt", "w");
     if (cd)
     {
         while (cc)

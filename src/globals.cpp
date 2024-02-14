@@ -48,7 +48,7 @@ CUserCmd *current_late_user_cmd{ nullptr };
 
 bool isHackActive()
 {
-    return !settings::rosnehook_disabled.load() && *global_enable;
+    return !settings::darkerhook_disabled.load() && *global_enable;
 }
 
 GlobalSettings g_Settings{};

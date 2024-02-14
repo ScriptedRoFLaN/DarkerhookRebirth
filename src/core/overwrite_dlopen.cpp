@@ -13,7 +13,7 @@ void *dlopen(const char *__file, int __mode) __THROWNL
     if (!strcmp(__file, "bin/launcher.so"))
     {
         logging::Info("Intercepted launcher.so");
-        logging::Info("Waiting for Rosnehook to load Launcher symbols...");
+        logging::Info("Waiting for Darkerhook to load Launcher symbols...");
         while (sharedobj::launcher().lmap == nullptr)
             usleep(1);
         logging::Info("Loaded Launcher symbols");

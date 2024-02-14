@@ -24,7 +24,7 @@ void Manager::add(IVariable &me, std::string name)
     registered.emplace(name, me);
 }
 
-// Applying the defaults needs to be delayed, because preloaded Rosnehook can not properly convert SDL codes to names before TF2 init
+// Applying the defaults needs to be delayed, because preloaded Darkerhook can not properly convert SDL codes to names before TF2 init
 void Manager::applyDefaults()
 {
     for (auto &variables : registered)
@@ -52,7 +52,7 @@ bool Manager::VariableDescriptor::isChanged()
     return variable.toString() != defaults;
 }
 
-// Applying the defaults needs to be delayed, because preloaded Rosnehook can not properly convert SDL codes to names before TF2 init
+// Applying the defaults needs to be delayed, because preloaded Darkerhook can not properly convert SDL codes to names before TF2 init
 void Manager::VariableDescriptor::applyDefaults()
 {
     if (type == VariableType::KEY)

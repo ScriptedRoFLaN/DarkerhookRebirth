@@ -6,5 +6,5 @@
 
 namespace settings
 {
-std::atomic<bool> rosnehook_disabled{ false };
+std::atomic<bool> darkerhook_disabled{ false };
 }
