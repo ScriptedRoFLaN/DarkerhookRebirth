@@ -1,14 +1,14 @@
 <p align="center">
-  <img src="https://media.discordapp.net/attachments/1139676647407243315/1150613674201985096/IMG_2314.png">
+  <img src="https://steamuserimages-a.akamaihd.net/ugc/2513641197103535665/98C6A1E602DF4E4C0578AF548810566877A4F5AD/">
 </p>
 
 # good pasted cheat 👍
 
 ## Support
 
-https://dsc.gg/rosnehook
+no support xdd
 
-## Download Rosnehook
+## Download Darkerhook
 
 Open a terminal window and enter the following command:
 
