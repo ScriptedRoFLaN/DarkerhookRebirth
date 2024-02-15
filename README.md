@@ -6,7 +6,7 @@
 
 ## Support
 
-no support xdd
+discord: froyohabib
 
 ## Download Darkerhook
 
