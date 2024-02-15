@@ -127,7 +127,7 @@ void dispatchUserMessage(bf_read &buffer, int type)
         {
             if (*saywhenimkickingaskid)
             {
-                chat_stack::Say("f1 cheater/bot", true);
+                chat_stack::Say("F1 cheater/bot", true);
             }
         }
 
