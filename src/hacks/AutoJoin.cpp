@@ -38,7 +38,6 @@ bool UnassignedClass()
     return g_pLocalPlayer->clazz != *autojoin_class;
 }
 
-static Timer autoteam_timer{};
 static Timer startqueue_timer{};
 #if !ENABLE_VISUALS
 static Timer queue_timer{};
@@ -96,7 +95,9 @@ void UpdateSearch()
 
 static void Update()
 {
-    if (autoteam_timer.test_and_set(5000))
+    static Timer join_timer{};
+    
+    if (join_timer.test_and_set(500))
     {
         if (*autojoin_team && UnassignedTeam())
             hack::ExecuteCommand("autoteam");

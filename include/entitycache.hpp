@@ -22,7 +22,6 @@
 #include "globals.hpp"
 #include "classinfo/classinfo.hpp"
 #include "client_class.h"
-#include "Constants.hpp"
 #include <optional>
 #include <soundcache.hpp>
 
@@ -34,9 +33,9 @@ struct model_t;
 struct mstudiohitboxset_t;
 struct mstudiobbox_t;
 
-#define PROXY_ENTITY true
+#define PROXY_ENTITY
 
-#if PROXY_ENTITY
+#ifdef PROXY_ENTITY
 #define RAW_ENT(ce) ce->InternalEntity()
 #else
 #define RAW_ENT(ce) ce->m_pEntity
@@ -46,7 +45,7 @@ struct mstudiobbox_t;
 
 #define CE_INT(entity, offset) CE_VAR(entity, offset, int)
 #define CE_FLOAT(entity, offset) CE_VAR(entity, offset, float)
-#define CE_BYTE(entity, offset) CE_VAR(entity, offset, unsigned char)
+#define CE_BYTE(entity, offset) CE_VAR(entity, offset, byte)
 #define CE_VECTOR(entity, offset) CE_VAR(entity, offset, Vector)
 
 #define CE_GOOD(entity) ((entity) && !g_Settings.bInvalid && (entity)->Good())
@@ -63,9 +62,8 @@ struct mstudiobbox_t;
 class CachedEntity
 {
 public:
-    typedef CachedEntity ThisClass;
     CachedEntity();
-    explicit CachedEntity(u_int16_t idx);
+    explicit CachedEntity(int idx);
     ~CachedEntity();
 
     __attribute__((hot)) void Update();
@@ -78,7 +76,8 @@ public:
 
     __attribute__((always_inline, hot, const)) bool Good() const
     {
-        if (!RAW_ENT(this) || !RAW_ENT(this)->GetClientClass()->m_ClassID)
+        auto internalEntity = RAW_ENT(this);
+        if (!internalEntity || !internalEntity->GetClientClass()->m_ClassID)
             return false;
         IClientEntity *const entity = InternalEntity();
         return entity && !entity->IsDormant();
@@ -86,25 +85,31 @@ public:
 
     __attribute__((always_inline, hot, const)) bool Valid() const
     {
-        if (!RAW_ENT(this) || !RAW_ENT(this)->GetClientClass()->m_ClassID)
+        auto internalEntity = RAW_ENT(this);
+        if (!internalEntity || !internalEntity->GetClientClass()->m_ClassID)
             return false;
         IClientEntity *const entity = InternalEntity();
         return entity;
     }
 
-    template <typename T> __attribute__((always_inline, hot, const)) T &var(uintptr_t offset) const
-    {
-        return *reinterpret_cast<T *>(uintptr_t(RAW_ENT(this)) + offset);
-    }
-
-    const u_int16_t m_IDX;
+    const int m_IDX;
 
     int m_iClassID() const
     {
-        if (this && RAW_ENT(this))
-            if (RAW_ENT(this)->GetClientClass())
-                if (RAW_ENT(this)->GetClientClass()->m_ClassID)
-                    return RAW_ENT(this)->GetClientClass()->m_ClassID;
+        if (this)
+        {
+            auto internalEntity = RAW_ENT(this);
+            if (internalEntity)
+            {
+                auto clientClass = internalEntity->GetClientClass();
+                if (clientClass)
+                {
+                    int classID = clientClass->m_ClassID;
+                    if (classID)
+                        return classID;
+                }
+            }
+        }
         return 0;
     };
 
@@ -135,7 +140,7 @@ public:
 
     bool m_bEnemy() const
     {
-        if (CE_BAD(g_pLocalPlayer->entity))
+        if (CE_BAD(LOCAL_E))
             return true;
         return m_iTeam() != g_pLocalPlayer->team;
     };
@@ -178,9 +183,7 @@ public:
         switch (classid)
         {
         case CL_CLASS(CTFPlayer):
-        {
             return ENTITY_PLAYER;
-        }
         case CL_CLASS(CTFGrenadePipebombProjectile):
         case CL_CLASS(CTFProjectile_Cleaver):
         case CL_CLASS(CTFProjectile_Jar):
@@ -194,42 +197,34 @@ public:
         case CL_CLASS(CTFProjectile_SentryRocket):
         case CL_CLASS(CTFProjectile_BallOfFire):
         case CL_CLASS(CTFProjectile_Flare):
-        {
             return ENTITY_PROJECTILE;
-        }
         case CL_CLASS(CObjectTeleporter):
         case CL_CLASS(CObjectSentrygun):
         case CL_CLASS(CObjectDispenser):
-        {
             return ENTITY_BUILDING;
-        }
         case CL_CLASS(CZombie):
         case CL_CLASS(CTFTankBoss):
         case CL_CLASS(CMerasmus):
         case CL_CLASS(CMerasmusDancer):
         case CL_CLASS(CEyeballBoss):
         case CL_CLASS(CHeadlessHatman):
-        {
             return ENTITY_NPC;
-        }
         default:
-        {
             return ENTITY_GENERIC;
-        }
         }
     };
 
     float m_flDistance() const
     {
-        if (CE_GOOD(g_pLocalPlayer->entity))
+        if (CE_GOOD(LOCAL_E))
             return g_pLocalPlayer->v_Origin.DistTo(m_vecOrigin());
-        else
-            return FLT_MAX;
+        return FLT_MAX;
     };
 
     bool m_bGrenadeProjectile() const
     {
-        return m_iClassID() == CL_CLASS(CTFGrenadePipebombProjectile) || m_iClassID() == CL_CLASS(CTFProjectile_Cleaver) || m_iClassID() == CL_CLASS(CTFProjectile_Jar) || m_iClassID() == CL_CLASS(CTFProjectile_JarMilk);
+        int classID = m_iClassID();
+        return classID == CL_CLASS(CTFGrenadePipebombProjectile) || classID == CL_CLASS(CTFProjectile_Cleaver) || classID == CL_CLASS(CTFProjectile_Jar) || classID == CL_CLASS(CTFProjectile_JarMilk);
     };
 
     static bool IsProjectileACrit(CachedEntity *ent)
@@ -241,27 +236,13 @@ public:
 
     bool m_bCritProjectile()
     {
-        switch (m_Type())
-        {
-        case EntityType::ENTITY_PROJECTILE:
+        if (m_Type() == EntityType::ENTITY_PROJECTILE)
             return IsProjectileACrit(this);
-        default:
-            return false;
-        }
+        return false;
     };
 
     bool m_bAnyHitboxVisible{ false };
     bool m_bVisCheckComplete{ false };
-
-    /*k_EItemType m_ItemType()
-    {
-        if (m_Type() == ENTITY_GENERIC)
-            return g_ItemManager.GetItemType(this);
-        else
-            return ITEM_NONE;
-    };*/
-
-    unsigned long m_lLastSeen{ 0 };
     Vector m_vecVelocity{ 0 };
     Vector m_vecAcceleration{ 0 };
     hitbox_cache::EntityHitboxCache hitboxes;
@@ -270,38 +251,28 @@ public:
     {
         m_bAnyHitboxVisible = false;
         m_bVisCheckComplete = false;
-        m_lLastSeen         = 0;
         if (player_info)
             memset(player_info, 0, sizeof(player_info_s));
         m_vecAcceleration.Zero();
         m_vecVelocity.Zero();
     }
 
-    bool was_dormant() const
-    {
-        return RAW_ENT(this)->IsDormant();
-    };
-
-    bool velocity_is_valid{ false };
-#if !PROXY_ENTITY
+#ifndef PROXY_ENTITY
     IClientEntity *m_pEntity{ nullptr };
 #endif
 };
 
 namespace entity_cache
-{  
-extern u_int16_t max;
-extern u_int16_t previous_max;
+{
+extern int max;
+extern int previous_max;
 extern std::vector<CachedEntity *> valid_ents;
-extern std::unordered_map<u_int16_t, CachedEntity> array;
+extern std::unordered_map<int, CachedEntity> array;
 extern std::vector<CachedEntity *> player_cache;
-inline CachedEntity *Get(const u_int16_t &idx)
+inline CachedEntity *Get(const int &idx)
 {
     auto test = array.find(idx);
-    if (test == array.end())
-        return nullptr;
-    else
-        return &test->second;
+    return test != array.end() ? &test->second : nullptr;
 }
 __attribute__((hot)) void Update();
 void Invalidate();
